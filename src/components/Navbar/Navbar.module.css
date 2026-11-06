@@ -1,0 +1,245 @@
+.nav {
+  background: transparent;
+  width: 100vw;
+  height: 5rem;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 11;
+  background: var(--color-bg1);
+}
+
+.windowScroll {
+  background: var(--color-primary);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.navContainer {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  align-items: center;
+  text-align: center;
+}
+
+nav button {
+  display: none;
+}
+
+.navContainer a img{
+  margin-top: 10px;
+  height: 64px;
+  width: 200px;
+  margin-right: 24px;
+}
+
+.navMenu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navMenu a {
+  font-size: 0.9rem;
+  padding-bottom: 16px;
+  transition: var(--transition);
+}
+
+.navMenu a:hover{
+  color: var(--color-bg2);
+}
+
+.menuSuspenso{
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-white);
+  border-radius: 8px;
+  width: 12ch;
+  background-color: var(--color-primary);
+  display: none;
+  text-align: center;
+  flex-direction: column;
+  line-height: 16px;
+}
+
+.menuSuspensoAtivo {
+  display: flex !important;
+}
+
+.menuSuspenso a{
+  width: 100%;
+  padding: 12px;
+  border-bottom: solid var(--color-white) 1px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuSuspenso a:last-child{
+  border-bottom: none;
+}
+
+.navMenu a:hover + .menuSuspenso{
+  display: flex;
+}
+
+.menuSuspenso:hover {
+  display: flex;
+}
+
+@media screen and (max-width: 1160px) {
+  .toggleMenuContainer{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 30px;
+  }
+
+  .logoContainer{
+    margin-left: 30px;
+  }
+
+  .navContainer{
+    width: 100%;
+    gap: 0px;
+  }
+
+  nav button {
+    display: inline-block;
+    background: transparent;
+    font-size: 1.8rem;
+    color: var(--color-white);
+    cursor: pointer;
+  }
+
+  .navContainer a img{
+    height: 48px;
+  }
+
+  .navMenu a:hover + .menuSuspenso:not(.menuSuspensoAtivo) {
+    display: none;
+  }
+
+  .menuSuspenso {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100%;
+    border-radius: 0;
+    background-color: var(--color-primary);
+    margin-top: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    }
+
+  .menuSuspensoAtivo {
+    max-height: 200px;
+  }
+
+  .menuSuspenso a {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .menuSuspenso a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding-left: 2rem;
+  }
+
+  .menuSuspenso a:last-child {
+    border-bottom: none;
+  }
+
+  .navMenu a {
+    padding-bottom: 0;
+  }
+
+  nav button.close-menu-btn {
+    display: none;
+  }
+
+  .navMenu {
+    position: absolute;
+    top: 5rem;
+    right: 0;
+    overflow: auto;
+    width: 18rem;
+    height: 100vh;
+    flex-direction: column;
+    gap: 0;
+    display: none;
+  }
+
+  .menuOpened{
+    display: flex;
+    animation: slideOpen 0.5s ease forwards;
+  }
+
+  .menuClosed{
+    animation: slideClose 0.5s ease forwards;
+    display: none;
+  }
+
+  .navMenu li {
+    width: 100%;
+    height: 5.8rem;
+    transform-origin: top right;
+  }
+
+  .navMenu li a {
+    background: var(--color-primary);
+    border-bottom: 0.5px solid var(--color-black);
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+  }
+
+  .navMenu li a:hover {
+    background: var(--color-bg2);
+    color: var(--color-white);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    width: var(--container-width-sm);
+  }
+
+  .navMenu {
+    right: 3%;
+  }
+
+  .navMenu li {
+    height: 4rem;
+  }
+}
+
+@keyframes slideOpen {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideClose {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

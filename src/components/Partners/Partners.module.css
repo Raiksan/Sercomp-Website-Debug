@@ -1,0 +1,34 @@
+.partners {
+  overflow-x: hidden;
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+.partners h1 {
+  text-align: center;
+}
+
+.partnersContainer {
+  overflow-x: hidden;
+  position: relative;
+  margin-bottom: 5rem;
+}
+
+.partnersContainer h1 {
+  text-align: center;
+}
+
+.avatarPartner {
+  display: flex;
+  align-items: center;
+  width: 16rem;
+  height: 8rem;
+  border-radius: 10%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  padding: 2rem;
+}
+
+.partnerInfo {
+  text-align: center;
+}

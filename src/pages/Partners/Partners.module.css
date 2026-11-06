@@ -1,0 +1,44 @@
+.patrocinadores {
+  margin-top: 2rem;
+}
+
+.patrocinadoresContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;  
+}
+
+.patrocinadoresMember {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-bg2);
+  padding: 1.5rem;
+  border: 1px solid transparent;
+  transition: var(--transition);
+  border-radius: 10px;
+}
+
+.patrocinadoresMember {
+  background-color: var(--color-bg2);
+  padding: 2rem;
+  border: 1px solid transparent;
+  transition: var(--transition);
+  height: 10rem;
+}
+
+.patrocinadoresMember img {
+  max-height: 8rem;
+}
+
+.patrocinadoresMember:hover {
+  background-color: #F29D35;
+  border-color: var(--color-secondary); 
+}
+
+/* Tablets e dispositivos médios */
+@media screen and (max-width: 768px) {
+  .patrocinadoresContainer {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

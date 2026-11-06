@@ -1,0 +1,39 @@
+.orgsContainer {
+  overflow-x: hidden;
+  position: relative;
+}
+
+.org {
+  padding: 2rem;
+}
+
+.avatar {
+  width: 15rem;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1024px) {
+  /*FAQs*/
+  .faqsContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .faq {
+    padding: 1.5rem;
+  }
+}
+
+/* MEDIA QUERIES (PHONES) */
+
+@media screen and (max-width: 600px) {
+  /*ORGANIZATION*/
+  .orgBody {
+    padding: 1.2rem;
+  }
+}

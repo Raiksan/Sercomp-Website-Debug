@@ -1,0 +1,54 @@
+/* Estilos globais do modo debug (usados fora do CSS Module do painel). */
+
+.debug-hidden-link {
+  position: relative;
+  outline: 1px dashed #39ff14 !important;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.debug-hidden-link::after {
+  content: "DEBUG";
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #39ff14;
+  color: #04120a;
+  font-family: "Courier New", monospace;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.debug-revealed {
+  outline: 2px dashed #39ff14 !important;
+  outline-offset: 4px;
+  position: relative;
+}
+
+.debug-revealed::before {
+  content: "REVELADO PELO DEBUG";
+  position: absolute;
+  top: -9px;
+  left: 8px;
+  z-index: 5;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #39ff14;
+  color: #04120a;
+  font-family: "Courier New", monospace;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+/* Em carrosséis/overflow hidden, evita que o rótulo e o contorno vazem. */
+.debug-revealed::before {
+  white-space: nowrap;
+}

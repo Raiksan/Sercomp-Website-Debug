@@ -1,0 +1,36 @@
+.header {
+    position: relative;
+    top: 5rem;
+    overflow: hidden;
+    background: var(--color-bg1);
+    margin-bottom: 6rem;
+}
+
+.header .title{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: left;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.description strong{
+    color: yellow;
+}
+
+.description p{
+    text-align: justify;
+    text-indent: 2em;
+}
+
+@media screen and (max-width: 450px) {
+
+    .header div h1 {
+        font-size:xx-large;
+    }
+}
