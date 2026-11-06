@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import Confetti from 'react-confetti';
+import { withBase } from '../../utils/withBase';
 import styles from './Countdown.module.css';
 
 Countdown.propTypes = {
@@ -116,7 +117,7 @@ export default function Countdown({eventStart, eventEnd}) {
             <div className={styles.countdown} ref={confettiRef}>
               <p>O evento começou!</p>
             </div>
-            <h3>Confira nossa <a href='/timeline'>programação</a>!</h3>
+            <h3>Confira nossa <a href={withBase('/timeline')}>programação</a>!</h3>
           </div>
         )}
         {eventStatus === 'after' && (

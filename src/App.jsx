@@ -31,10 +31,11 @@ import ProgrammingMarathon from "./pages/ProgrammingMarathon/ProgrammingMarathon
 import Registrations from "./pages/Registrations/Registrations";
 import TechnologyFair from "./pages/TechnologyFair/TechnologyFair";
 import Timeline from "./pages/Timeline/Timeline";
+import { BASE_PATH, withBase } from "./utils/withBase";
 
 function App() {
   return (
-    <Router>
+    <Router basename={BASE_PATH || undefined}>
       <Layout>
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -67,7 +68,7 @@ function App() {
 
                     <p>
                       Para buscar sua inscrição, clique{" "}
-                      <a href="/busca/inscricao">aqui</a>
+                      <a href={withBase("/busca/inscricao")}>aqui</a>
                     </p>
 
                     <p>Agradecemos pela compreensão e esperamos por você!</p>

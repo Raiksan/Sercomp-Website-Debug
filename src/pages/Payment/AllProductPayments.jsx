@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import useWindowWidth from "../../hooks/useWindowWidth";
 import { api } from "../../lib/axios";
+import { withBase } from "../../utils/withBase";
 import styles from "./Payment.module.css";
 import moment from "moment";
 
@@ -14,7 +15,7 @@ const AllProductPayments = () => {
   const [loading, setLoading] = useState(true);
   const [purchases, setPurchases] = useState([]);
 
-  const fullUrl = `${window.location.origin}${location.pathname}${location.search}`;
+  const fullUrl = `${window.location.origin}${withBase(location.pathname)}${location.search}`;
   const windowWidth = useWindowWidth();
 
   useEffect(() => {

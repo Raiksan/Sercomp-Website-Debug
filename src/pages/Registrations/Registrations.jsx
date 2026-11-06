@@ -8,6 +8,7 @@ import { api } from "../../lib/axios";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Partners from "../../components/Partners/Partners";
+import { withBase } from "../../utils/withBase";
 import styles from "./Registrations.module.css";
 
 const mockActivities = {
@@ -295,7 +296,7 @@ const Inscricoes = () => {
               </div>
             </div>
             <div className={styles.linkContainer}>
-              <a href="/busca/inscricao">
+              <a href={withBase("/busca/inscricao")}>
                 Já está inscrito? Busque sua inscrição aqui!
               </a>
             </div>

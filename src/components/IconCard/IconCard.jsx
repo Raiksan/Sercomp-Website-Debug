@@ -1,5 +1,6 @@
 import styles from './IconCard.module.css';
 import PropTypes from 'prop-types';
+import { withBase } from '../../utils/withBase';
 
 const IconCard = ({ icon, title, text, url }) => {
   return (
@@ -12,7 +13,7 @@ const IconCard = ({ icon, title, text, url }) => {
         <p className={styles.activitieText}>{text}</p>
       </div>
       <footer className={styles.activitieFooter}>
-        <a href={url} className={styles.activitieAcessURL}>Acessar</a>
+        <a href={withBase(url)} className={styles.activitieAcessURL}>Acessar</a>
       </footer>
     </section>
   );

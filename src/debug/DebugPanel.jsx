@@ -8,6 +8,7 @@ import {
   orphanRoutes,
   routeStatusLabels,
 } from "./debugRoutes";
+import { withBase } from "../utils/withBase";
 import styles from "./DebugPanel.module.css";
 
 const TABS = [
@@ -362,7 +363,7 @@ function DebugPanel() {
                         Abra qualquer página diretamente. Rotas com etiqueta “Rota debug” só existem nesta cópia.
                       </p>
                     </div>
-                    <a className={styles.ghostButton} href={`${location.pathname}?debug=1`} target="_blank" rel="noreferrer">
+                    <a className={styles.ghostButton} href={`${withBase(location.pathname)}?debug=1`} target="_blank" rel="noreferrer">
                       Abrir com ?debug=1
                     </a>
                   </div>

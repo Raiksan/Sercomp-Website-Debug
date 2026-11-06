@@ -1,4 +1,5 @@
 import footerBackground from '../../assets/images/footer_background.webp';
+import { withBase } from '../../utils/withBase';
 import styles from './Footer.module.css';
 
 export default function Footer(){
@@ -6,7 +7,7 @@ export default function Footer(){
         <footer className={styles.footer} >
             <div className={`container ${styles.footerContainer}`}>
                 <div className={styles.footer1}>
-                    <a href="/" className={styles.footerLogo}>
+                    <a href={withBase("/")} className={styles.footerLogo}>
                         <h4>SERCOMP</h4>
                     </a>
                     <p>Do Código à Liderança: <br/>
@@ -16,16 +17,16 @@ export default function Footer(){
                 <div className={styles.footer2}>
                     <h4>Permalinks</h4>
                     <ul className={styles.permalinks}>
-                        <li><a href="/">Início</a></li>
-                        <li><a href="timeline">Programação</a></li>
-                        <li><a href="about">Sobre</a></li>
-                        <li><a href="contact">Contato</a></li>
+                        <li><a href={withBase("/")}>Início</a></li>
+                        <li><a href={withBase("/timeline")}>Programação</a></li>
+                        <li><a href={withBase("/about")}>Sobre</a></li>
+                        <li><a href={withBase("/contact")}>Contato</a></li>
                     </ul>
                 </div>
                 <div className={styles.footer3}>
                     <h4>Privacidade</h4>
                     <ul className={styles.privacy}>
-                        <li><a href="privacy">Políticas Gerais</a></li>
+                        <li><a href={withBase("/privacy")}>Políticas Gerais</a></li>
                     </ul>
                 </div>
                 <div className={styles.footer4}>

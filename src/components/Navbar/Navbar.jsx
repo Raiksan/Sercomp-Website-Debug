@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import logotipo from "../../assets/images/logotipo_viisercomp.png";
 import { linksData } from "../../data/LinksData";
 import { useDebug } from "../../debug/DebugContext";
+import { withBase } from "../../utils/withBase";
 import styles from "./Navbar.module.css";
 
 const hiddenNavLinks = [
@@ -49,7 +50,7 @@ export default function Navbar() {
     <nav className={`${styles.nav} ${menuOpen ? styles.windowScroll : ""}`}>
       <div className={`${styles.navContainer}`}>
         <div className={styles.logoContainer}>
-          <a href="/">
+          <a href={withBase("/")}>
             <img src={logotipo} alt="vii sercomp" />
           </a>
         </div>
@@ -77,18 +78,18 @@ export default function Navbar() {
                       style={{padding: link.sublinks ? 'auto 16px' : '0'}}
                     >
                       {link.sublinks && link.sublinks.map((sublink, i) => (   
-                        <a key={i} href={sublink.href}>{sublink.text}</a>
+                        <a key={i} href={withBase(sublink.href)}>{sublink.text}</a>
                       ))}
                     </div>
                   </>
                 ) : (
                   <>
-                    <a className={styles.link} href={link.href}>
+                    <a className={styles.link} href={withBase(link.href)}>
                       {link.text}
                     </a>
                     <div className={styles.menuSuspenso} style={{padding: link.sublinks ? 'auto 16px' : '0'}}>
                       {link.sublinks && link.sublinks.map((sublink, i) => (   
-                        <a key={i} href={sublink.href}>{sublink.text}</a>
+                        <a key={i} href={withBase(sublink.href)}>{sublink.text}</a>
                       ))}
                     </div>
                   </>
@@ -102,7 +103,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <a
                     className={`${styles.link} debug-hidden-link`}
-                    href={link.href}
+                    href={withBase(link.href)}
                   >
                     {link.text}
                   </a>

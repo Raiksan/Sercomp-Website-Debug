@@ -9,6 +9,7 @@ import { api } from "../../lib/axios";
 import semImagem from "../../assets/images/sem-imagem.webp";
 import styles from "./Market.module.css";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
+import { withBase } from "../../utils/withBase";
 
 const mockProducts = [
   {
@@ -151,7 +152,7 @@ const Market = () => {
 
         {showEmailPopup && <EmailPopup onClose={handleCloseEmailPopup} />}
         <div className={styles.linkContainer}>
-          <a href="/busca/inscricao/pagamentos">
+          <a href={withBase("/busca/inscricao/pagamentos")}>
             Já fez alguma compra? Busque aqui!
           </a>
         </div>
