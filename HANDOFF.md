@@ -60,14 +60,52 @@ Causa raiz e correção estão na seção 5. O commit foi enviado para `main`, o
 | `/Sercomp-Website-Debug/debug/loja` (deep link) | Loja carrega com produtos fictícios e aviso “MODO DEBUG” |
 | `?debug=1` | Painel 🐞 abre na aba Páginas, listando as 14 rotas ocultas/órfãs |
 
+### Rodada 2 — fluxos de demonstração e painel (commit `0793269`) — VERIFICADA
+
+Depois da correção de links, sobravam dois problemas reais:
+
+**1. Fluxo de pagamento travava em loading infinito.** `Payment.jsx` e `AllProductPayments.jsx`
+nunca chamavam `setLoading(false)` no erro, então quem vinha da inscrição/loja em modo demo
+ficava preso na tela de carregamento. Agora:
+
+- Sem `VITE_API_URL` (ou em erro) as páginas usam recibo fictício + banner `DemoBanner`.
+- `finally { setLoading(false) }` garante que o loading sempre termina.
+- Estado vazio explícito (“Recibo não encontrado” / “Nenhuma compra encontrada”).
+- `/busca/inscricao` em modo demo encaminha qualquer e-mail para o recibo fictício.
+
+**2. O painel de debug tinha dois defeitos visuais.**
+
+- O modal aparecia **transparente**: as animações `overlayIn`/`modalIn` animavam `opacity`,
+  e o painel ficava semitransparente no momento da captura. As keyframes agora animam só
+  `transform`; o painel é sempre opaco.
+- Os grupos da aba “Conteúdo oculto” tinham ~64px de respiro extra por causa da regra global
+  `section { padding: 2rem 0 }` do `index.css`. Corrigido com `.overlay section { padding: 0 }`
+  no `DebugPanel.module.css`.
+
+Também foi adicionado `?debug=1&tab=conteudo|dom|info|paginas` para abrir o painel direto numa aba
+(usado para validar as três abas por screenshot).
+
+**Verificação** (screenshots headless, build publicado):
+
+| Verificação | Resultado |
+|---|---|
+| Aba `Conteúdo oculto` | Lista compacta, interruptores alinhados |
+| Aba `DOM` | Encontrou 8 elementos escondidos e permite revelar |
+| Aba `Info` | Build, viewport, fuso, localStorage e ações |
+| `/pagamento/user/demo-user/lote/demo-lote` | Recibo fictício + banner + link de validação com a base correta |
+| `/market/user/demo-user/pagamentos` | Recibo de compra fictício |
+| `/busca/inscricao` | Formulário com aviso de busca simulada |
+| `/chamadas`, `/articles`, `/hackathon`, `/programming-marathon`, `/2023`, `/2024`, `/registration`, `/market`, `/ideathon`, `/technology-fair`, `/privacy`, `/debug/inscricao` | Todas renderizam com conteúdo |
+
 ### Pendente / nice to have
 
 1. ~~Confirmar deploy~~ — feito.
 2. ~~Validar home e deep link~~ — feito.
 3. Testar o clique nos links do menu e do footer (a verificação acima foi por URL direta; os `href`
    já estão todos com `withBase`, mas um clique real em cada item fecha o ciclo).
-4. Opcional: rodar `npm run lint` e decidir o que fazer com o erro pré-existente do `Footer.jsx`
-   (import `footerBackground` não usado — já existia antes, não é regressão).
+4. `npm run lint` continua com **39 erros pré-existentes** do código original (imports não usados em
+   `orgData2023/2024.js`, `prop-types` em `toggleExpand.jsx`, `termsLink` em `Hackthon.jsx`, etc.).
+   Nenhum afeta o build. O que era do nosso código (`process` em `vite.config.js`) já foi resolvido.
 
 ---
 
@@ -163,6 +201,12 @@ Configuração atual da API de Pages do repo: `build_type=legacy`, `source.branc
    (o PowerShell trata o stderr do git como erro). Confira a linha `xxx..yyy main -> main`.
 5. **Deep link no Pages devolve 404 de propósito.** O `404.html` é uma cópia do `index.html`; o conteúdo
    carrega normalmente. Não é bug.
+6. **CSS global vaza para dentro do painel.** `src/index.css` tem regras de elemento
+   (`section { padding: 2rem 0 }`, `section h2 { margin-bottom: 4rem }`). Qualquer componente novo
+   dentro do painel que use `<section>`/`<h2>` precisa resetar isso via `.overlay ...`.
+7. **Animação com `opacity` atrapalha screenshot headless.** Capturas com Firefox headless pegam a
+   animação no meio e o painel parece translúcido. Por isso as keyframes do painel animam só
+   `transform`. Se for investigar transparência, desconfie disso antes de mexer nas cores.
 
 ---
 
@@ -202,6 +246,8 @@ Invoke-RestMethod -Method Post "https://api.github.com/repos/$repo/pages/builds"
 - [x] Abrir a home publicada e confirmar que renderiza (feito por screenshot headless).
 - [x] Abrir `/debug/loja` direto pela barra de endereço (fallback SPA + basename OK).
 - [x] Abrir `?debug=1` e confirmar que o painel abre listando as rotas.
+- [x] Percorrer as 4 abas do painel (`?tab=paginas|conteudo|dom|info`) — todas renderizam.
+- [x] Validar os recibos fictícios de inscrição e de loja.
 - [ ] Clicar em todo o menu e no footer; conferir que a URL sempre começa com `/Sercomp-Website-Debug/`.
 - [ ] Percorrer as 4 abas do painel (Páginas → Conteúdo oculto → DOM → Info) e testar um toggle.
 - [ ] Se algo quebrar: `npm run dev` em `http://localhost:5173` (base `/`), depois
@@ -256,6 +302,8 @@ Sercomp-Website-Debug/
 ├─ package.json                    nome "sercomp-site-debug"
 ├─ README-DEBUG.md                 doc do painel + URLs online
 ├─ HANDOFF.md                      este arquivo
+├─ scripts/
+│  └─ shot.ps1                     captura screenshot de rotas (Firefox headless)
 ├─ .github/workflows/
 │  └─ deploy-pages.yml             build → gh-pages
 └─ src/
@@ -263,12 +311,13 @@ Sercomp-Website-Debug/
    ├─ main.jsx                     DebugProvider + css global de debug
    ├─ utils/withBase.js            helper de base URL  ← crítico para os links
    ├─ debug/
-   │  ├─ DebugPanel.jsx            modal (4 abas)
+   │  ├─ DebugPanel.jsx            modal (4 abas + ?tab=)
    │  ├─ DebugPanel.module.css
    │  ├─ DebugContext.jsx          toggles + localStorage
    │  ├─ debugRoutes.js            inventário de rotas/toggles
    │  └─ debugGlobal.css
    ├─ components/
+   │  ├─ DemoBanner/DemoBanner.jsx aviso “MODO DEBUG · dados fictícios”
    │  ├─ Navbar/Navbar.jsx         itens ocultos + hrefs com withBase
    │  ├─ Footer/Footer.jsx         links com withBase
    │  ├─ Countdown/Countdown.jsx   link /timeline com withBase
@@ -276,8 +325,9 @@ Sercomp-Website-Debug/
    └─ pages/
       ├─ Registrations/Registrations.jsx   mock sem API + link com withBase
       ├─ Market/Market.jsx                 mock sem API + link com withBase
-      ├─ Payment/Payment.jsx               fullUrl com base
-      ├─ Payment/AllProductPayments.jsx    fullUrl com base
+      ├─ SearchRegistration/SearchRegistration.jsx  busca simulada
+      ├─ Payment/Payment.jsx               recibo de inscrição fictício
+      ├─ Payment/AllProductPayments.jsx    recibo de compra fictício
       ├─ PreviousEditions/2024/HiddenArticles2024.jsx   bloco comentado de 2024
       └─ Error404/Error404.jsx             o 404 do próprio site
 ```
