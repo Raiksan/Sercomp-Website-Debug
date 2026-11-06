@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { BiCart, BiX } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import CartPopup from "../../components/CartPopup/CartPopup";
+import DemoBanner from "../../components/DemoBanner/DemoBanner";
 import EmailPopup from "../../components/EmailPopup/EmailPopup";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import MarketContext from "../../context/MarketContext";
@@ -119,20 +120,9 @@ const Market = () => {
         ) : (
           <>
             {mockMode && (
-              <p
-                style={{
-                  maxWidth: "760px",
-                  margin: "0 auto 1rem",
-                  padding: "10px 14px",
-                  border: "1px dashed #f7c94b",
-                  borderRadius: "8px",
-                  color: "#f7c94b",
-                  fontSize: "0.85rem",
-                  textAlign: "center",
-                }}
-              >
+              <DemoBanner>
                 MODO DEBUG · produtos fictícios de demonstração (API não configurada ou indisponível).
-              </p>
+              </DemoBanner>
             )}
             <div className={styles.productContainer}>
               {marketProducts.map((product) => (

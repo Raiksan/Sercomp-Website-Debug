@@ -216,6 +216,12 @@ function DebugPanel() {
     if (params.get("debug") === "1" || window.location.hash === "#debug") {
       setOpen(true);
     }
+    // Permite abrir direto em uma aba: ?debug=1&tab=dom
+    const requestedTab = params.get("tab");
+    if (requestedTab && TABS.some((item) => item.id === requestedTab)) {
+      setTab(requestedTab);
+      setOpen(true);
+    }
   }, []);
 
   useEffect(() => {

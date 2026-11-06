@@ -24,6 +24,7 @@ Atalhos:
 - `Ctrl + Shift + D` — abre/fecha o painel
 - `Esc` — fecha o painel
 - `?debug=1` ou `#debug` na URL — abre o painel automaticamente
+- `?debug=1&tab=conteudo` (ou `dom`, `info`, `paginas`) — abre direto em uma aba
 
 ## O que o modal oferece
 
@@ -82,12 +83,15 @@ Modo do build, presença de `VITE_API_URL`/`VITE_EVENTO_UUID`, viewport, DPR, fu
 
 ## Modo demonstração (sem API)
 
-Como o projeto não inclui um backend, as páginas órfãs que dependem da API usam **dados fictícios** quando `VITE_API_URL` não está definida (ou quando a API falha):
+Como o projeto não inclui um backend, as páginas que dependem da API usam **dados fictícios** quando `VITE_API_URL` não está definida (ou quando a API falha):
 
 - `/debug/inscricao` — lotes, minicursos, workshops e oficinas de exemplo; o envio é simulado.
 - `/debug/loja` — quatro produtos de exemplo; o carrinho funciona e a compra é simulada.
+- `/busca/inscricao` — qualquer e-mail abre um recibo de inscrição fictício.
+- `/pagamento/user/...` — recibo de inscrição fictício (PIX de demonstração).
+- `/market/user/.../pagamentos` — recibo de compra fictício com os itens da loja.
 
-Um aviso amarelo “MODO DEBUG · dados fictícios” é exibido nessas páginas.
+Um aviso amarelo “MODO DEBUG · dados fictícios” (componente `DemoBanner`) aparece nessas páginas.
 
 > Se você criar um `.env.local` com `VITE_API_URL` e `VITE_EVENTO_UUID`, as páginas voltam a usar a API real.
 

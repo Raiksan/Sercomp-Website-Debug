@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa"; // Importe o ícone de Spinner
 import { ToastContainer, toast } from "react-toastify";
+import DemoBanner from "../../components/DemoBanner/DemoBanner";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import { api } from "../../lib/axios";
 
@@ -143,20 +144,9 @@ const Inscricoes = () => {
         </h1>
 
         {mockMode && (
-          <p
-            style={{
-              maxWidth: "760px",
-              margin: "0 auto 1rem",
-              padding: "10px 14px",
-              border: "1px dashed #f7c94b",
-              borderRadius: "8px",
-              color: "#f7c94b",
-              fontSize: "0.85rem",
-              textAlign: "center",
-            }}
-          >
+          <DemoBanner>
             MODO DEBUG · dados fictícios de demonstração (API não configurada ou indisponível). Nenhuma inscrição real será enviada.
-          </p>
+          </DemoBanner>
         )}
 
         {isLoading ? (

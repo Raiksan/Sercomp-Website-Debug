@@ -2,11 +2,28 @@ import { useEffect, useState } from "react";
 import { FaCopy } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import DemoBanner from "../../components/DemoBanner/DemoBanner";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import useWindowWidth from "../../hooks/useWindowWidth";
 import { api } from "../../lib/axios";
+import semImagem from "../../assets/images/sem-imagem.webp";
 import { withBase } from "../../utils/withBase";
 import styles from "./Payment.module.css";
+
+const demoUserInformations = {
+  user_name: "Participante de Demonstração",
+  inscricao: {
+    status: "PENDENTE",
+    nome_lote: "Lote 1 · demonstração",
+    preco: 40,
+  },
+  atividades: [
+    { nome: "Minicurso de Git e GitHub", tipo: "Minicurso" },
+    { nome: "Palestra: Do Código à Liderança", tipo: "Palestra" },
+  ],
+};
+
+const demoPixCode = "00020126580014br.gov.bcb.pix0136demo-sercomp-2025";
 
 const Payment = () => {
   const location = useLocation();
@@ -15,11 +32,20 @@ const Payment = () => {
   const [pixCopy, setPixCopy] = useState();
   const [qrBase64, setQrBase64] = useState();
   const [loading, setLoading] = useState(true);
+  const [mockMode, setMockMode] = useState(!import.meta.env.VITE_API_URL);
   const fullUrl = `${window.location.origin}${withBase(location.pathname)}${location.search}`;  
   const windowWidth = useWindowWidth();
 
   useEffect(() => {
     async function fecthApiData() {
+      if (!import.meta.env.VITE_API_URL) {
+        setUserInfomation(demoUserInformations);
+        setPixCopy(demoPixCode);
+        setQrBase64(semImagem);
+        setLoading(false);
+        return;
+      }
+
       try{
         const { data : userData } = await api.get(`/lote/${lote_id}/inscricoes/user/${user_id}`);
         setUserInfomation(userData);
@@ -27,12 +53,16 @@ const Payment = () => {
         const { data : paymentData } = await api.get(`/pagamento/user/${user_id}/lote/${lote_id}`);
         setPixCopy(paymentData.qr_code);
         setQrBase64(paymentData.qr_code_base64);
-
-        setLoading(false);
       }catch(error){
         console.log(error);
         toast.error("Usuário não encontrado!") 
-      }      
+        setMockMode(true);
+        setUserInfomation(demoUserInformations);
+        setPixCopy(demoPixCode);
+        setQrBase64(semImagem);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fecthApiData();
@@ -52,6 +82,21 @@ const Payment = () => {
     )        
   }
 
+  if(!userInformations){
+    return (
+      <section className={styles.container}>
+        <ToastContainer autoClose={1500} />
+        <h1 className="mainTitle">
+          <strong>Pagamentos</strong>
+        </h1>
+        <section className={styles.sectionContainer}>
+          <h2>Recibo não encontrado</h2>
+          <p>Não localizamos uma inscrição para este link.</p>
+        </section>
+      </section>
+    );
+  }
+
   return (
     <section className={styles.container}>
       <ToastContainer autoClose={1500} />
@@ -60,6 +105,11 @@ const Payment = () => {
       </h1>
 
       <section className={styles.sectionContainer}>
+        {mockMode && (
+          <DemoBanner>
+            MODO DEBUG · recibo fictício de demonstração (API não configurada ou indisponível).
+          </DemoBanner>
+        )}
         <h2>Recibo de Inscrição no VI SERCOMP 2024</h2>
         <span>
           <span className={styles.detach}>Guarde esse link</span>, ele é útil

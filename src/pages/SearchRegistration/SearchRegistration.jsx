@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
+import DemoBanner from "../../components/DemoBanner/DemoBanner";
 import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import { api } from "../../lib/axios";
 
@@ -22,9 +23,21 @@ const SearchRegistration = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const mockMode = !import.meta.env.VITE_API_URL;
 
   async function onSubmit(data) {
     setIsLoading(true);
+
+    if (mockMode) {
+      // Modo demonstração: qualquer e-mail abre um recibo fictício.
+      if (!searchType) {
+        navigate("/pagamento/user/demo-user/lote/demo-lote");
+      } else {
+        navigate("/market/user/demo-user/pagamentos");
+      }
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await api.post(
@@ -60,6 +73,11 @@ const SearchRegistration = () => {
           onSubmit={handleSubmit(onSubmit)}
           className={styles.formContainer}
         >
+          {mockMode && (
+            <DemoBanner>
+              MODO DEBUG · busca simulada: qualquer e-mail abre um recibo fictício (API não configurada).
+            </DemoBanner>
+          )}
           <div className={styles.inputGroup}>
             <div>
               <p>E-mail</p>
