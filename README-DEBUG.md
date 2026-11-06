@@ -4,6 +4,11 @@ Cópia do site original (`../Sercomp-Website`) modificada para inspecionar **tud
 
 O projeto original **não foi alterado**.
 
+## Online
+
+- Site publicado: https://raiksan.github.io/Sercomp-Website-Debug/
+- Repositório: https://github.com/Raiksan/Sercomp-Website-Debug
+
 ## Como rodar
 
 ```bash
